@@ -2,7 +2,25 @@ let button = document.getElementById('myButton');
 // button.addEventListener('click', (event) => console.log(event));
 
 // Observable created with `fromEvent`
-// Observable created to simulate `fromEvent`
+/*
+=============================
+onClick Observale with `fromEvent` - EXAMPLE 1
+=============================
+
+Rx.Observable.fromEvent(button,'click')
+.map(event => event.screenX)
+.subscribe(
+    v => { console.log(v) },
+    e => { console.log(e) },
+    () => { console.log('complete') }
+); 
+
+*/
+
+/*  
+=============================
+onClick Observale for button - simulate `fromEvent` - EXAMPLE 1
+=============================
 
 let observer = { // our own observer object
     next: function(value) {
@@ -26,3 +44,29 @@ Rx.Observable.create(subscriber => {
     //.filter(v => true)
     .subscribe(observer);
 
+*/
+
+/*
+=============================
+    Subject
+=============================
+*/
+
+let subject = new Rx.Subject();
+
+subject
+    .map((event) => event.event) // we can also use map() and etc ... with SUBJECT
+    .subscribe((event) => console.log('subsciber 1 ' + event));
+
+
+subject.subscribe((event) => console.log('subscribe 2 ' + event));
+
+
+// Both subscirbers are receiving the data
+subject.next({ event: 'test_event'});
+
+let observable = Rx.Observable.create(subscriber => {
+    subscriber.next(Math.random());
+});
+
+observable.subscribe(subject);
